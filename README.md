@@ -1,5 +1,7 @@
 # /level-up: The 10 Levels of Claude Code
 
+> **Community project.** This is an unofficial skill built by the [GenAI Circle](https://thegenaicircle.com) community. It is not affiliated with, endorsed by, or sponsored by Anthropic.
+
 Find out where you actually stand with Claude Code, and get a focused roadmap to the next level.
 
 This is a **skill** (custom slash command) for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). It scans your environment, assesses your setup, and gives you a personalized report with concrete next steps.
@@ -128,6 +130,10 @@ Run `/level-up` after every upgrade to your setup. The assessment updates based 
 Built by the [GenAI Circle](https://thegenaicircle.com) community, a group of professionals learning to work with AI tools daily. The levels, roadmaps, and tips come from real usage patterns across hundreds of members.
 
 Created by [David Arnoux](https://linkedin.com/in/davidarnoux).
+
+## Disclaimer
+
+Claude, Claude Code, and Anthropic are trademarks of Anthropic, PBC. This project is not affiliated with, endorsed by, or sponsored by Anthropic. All trademark references are used solely for identification and description purposes.
 
 ## License
 
