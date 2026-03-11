@@ -234,12 +234,11 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
 **Your roadmap:**
 
 1. **Pick your first MCP** (5 minutes)
-   - If you use Google Drive: start there (docs, sheets, slides)
-   - If you use Notion: start there (databases, pages)
-   - If you communicate via Slack: start there
-   - If email is your life: Gmail MCP
+   - MCP stands for "Model Context Protocol." In plain English: it's a plugin that lets Claude directly read and write to your tools. Instead of you copying a Slack message and pasting it into Claude, an MCP lets Claude go read Slack itself.
+   - Pick the tool you use most: Google Drive, Notion, Slack, or Gmail.
 
 2. **Add it to your config** (5 minutes)
+   - You tell Claude about your MCPs by adding them to a settings file called `.mcp.json`. Think of it like a contact list: you're giving Claude the address of each tool so it knows how to reach it.
    - Create `.mcp.json` in your project root (or add to `~/.claude.json` for global access).
    - Example structure:
    ```json
@@ -255,13 +254,13 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
    - Restart Claude Code after adding.
 
 3. **Test it with a real task** (5 minutes)
+   - Just ask Claude something that requires your tool. If it works, the MCP is connected:
    - "Summarize the last 5 messages in #general on Slack"
    - "What are the action items from my last meeting notes in Notion?"
    - "Draft a reply to the last email from [name]"
 
 4. **Add a second MCP** (5 minutes)
-   - Two connected data sources is where the magic starts.
-   - Claude can cross-reference: "Based on the Slack discussion AND the Notion brief, draft the proposal."
+   - Two connected data sources is where the magic starts. Claude can cross-reference: "Based on the Slack discussion AND the Notion brief, draft the proposal."
 
 **Community tip:** Don't install 15 MCPs on day one. Tijmen discovered that too many MCPs bloat your starting context. Claude Code's tool search feature helps (dropped context from 51% to 13%), but fewer is still better. Start with 1-2 that match your daily work.
 
@@ -280,13 +279,12 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
 **Your roadmap:**
 
 1. **Identify your most repeated task** (5 minutes)
-   - What do you explain to Claude Code at least once a week?
-   - What has a consistent structure every time?
-   - That answer from question 3 in the assessment? That's your first skill.
+   - Think about what you keep explaining to Claude over and over. "Research this company and give me a summary." "Review this document for quality." "Write a LinkedIn post in my voice." If you've said it more than twice, it should be a skill.
 
 2. **Create the skill file** (10 minutes)
+   - A skill is just a text file with instructions. You write down what you want Claude to do, step by step, and save it as a file. Then instead of typing those instructions every time, you just type `/name` and Claude follows the instructions automatically.
    - Create `.claude/commands/` directory if it doesn't exist.
-   - Create a markdown file: `.claude/commands/[name].md`
+   - Create a markdown file: `.claude/commands/[name].md` (for example, `research.md`)
    - Structure:
    ```markdown
    ---
@@ -314,17 +312,15 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
    ```
 
 3. **Test and iterate** (5 minutes)
-   - Type `/[name]` to run it.
-   - First version won't be perfect. Run it, see what's off, edit the .md file.
-   - Good skills get specific over time. Add examples, add rules, add edge cases.
+   - Type `/[name]` to run it. Claude reads your instructions and follows them.
+   - First version won't be perfect. Run it, see what's off, edit the .md file. The skill improves every time you tweak it.
 
 4. **Build 2-3 more skills** (ongoing)
-   - Research, review, create. That's the core three most people start with.
-   - Skills compound. Your `/research` feeds into `/create` which feeds into `/review`.
+   - Most people start with three: one for research, one for creating something, one for reviewing quality. Once you have those, they start feeding into each other naturally.
 
 **Community tip:** Skills turn Claude into a team member who never forgets the process. After building 5+ skills, output consistency goes from "hit or miss" to "reliable every time."
 
-**Note on terminology:** "Custom commands" and "skills" are the same thing. Files in `.claude/commands/` and `.claude/skills/` both create slash commands. The skills format (`.claude/skills/[name]/SKILL.md`) supports additional features like frontmatter config and supporting files.
+**Note on terminology:** "Custom commands" and "skills" are the same thing. Files in `.claude/commands/` and `.claude/skills/` both create slash commands.
 
 ---
 
@@ -332,32 +328,30 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
 
 **What this unlocks:** A persistent knowledge system. Claude doesn't just follow instructions. It draws from your accumulated knowledge, patterns, client history and examples to produce work that improves over time.
 
+**What "context architecture" actually means:** Right now, every time you start a new Claude session, it starts fresh. It doesn't remember what you did last week. A context architecture is a folder of files that Claude reads at the start of every session: who your clients are, what approaches you use, examples of your best work. It's like giving a new employee a handbook on day one instead of re-training them every morning.
+
 **Your roadmap:**
 
-1. **Design your memory architecture** (20 minutes)
-   - Create a structured knowledge base Claude can reference:
+1. **Create your knowledge folders** (20 minutes)
+   - Make a `memory/` folder in your project with subfolders for different types of knowledge:
    ```
    memory/
-   ├── company/        # Your business context
-   ├── customers/      # Client profiles and history
-   ├── patterns/       # Reusable approaches and frameworks
-   └── examples/       # Reference outputs and templates
+   ├── company/        # About your business, your positioning, your offers
+   ├── customers/      # One file per client: who they are, what you're doing for them
+   ├── patterns/       # Approaches that work: "how I run a strategy call," "how I write proposals"
+   └── examples/       # Your best past work that Claude can use as a reference
    ```
-   - Each file is markdown. Keep them focused. One topic per file.
+   - Each file is just a plain text document. Keep them focused: one topic per file.
 
-2. **Connect it through CLAUDE.md** (10 minutes)
-   - Your CLAUDE.md becomes the index. It tells Claude where to find what.
-   - Add a "Repository Navigation" section mapping needs to file paths.
-   - Add a "Before Starting Work" section: "Load memory/customers/[client] before any client work."
+2. **Point Claude to your knowledge** (10 minutes)
+   - Update your CLAUDE.md so it tells Claude where to find things. Add a section like "Before starting client work, read memory/customers/[client name]." This way Claude knows to check your notes before it starts working.
 
-3. **Seed it with knowledge** (30 minutes)
-   - Write down your top 5 patterns, frameworks, or approaches you use repeatedly.
-   - Save 3-5 examples of your best output as reference files.
-   - Create a client/project profile for your main work.
+3. **Write down what you know** (30 minutes)
+   - Start with 5 things you do the same way every time: how you structure a proposal, how you run a meeting, how you write a LinkedIn post. Save each one as a file in memory/patterns/.
+   - Save 3-5 examples of your best output. Claude will use these as a reference for quality and style.
 
 4. **Build the feedback loop** (ongoing)
-   - After every project, extract what worked into memory/patterns/.
-   - Your system gets smarter with every project. This is where compounding starts.
+   - After every project, save what worked. Your system gets smarter with every project. This is where the compounding starts: month one feels slow, month two you notice the difference.
 
 **Community tip:** "I moved my entire business into GitHub. Everything is a repo." The members running structured knowledge systems report 3-5x productivity gains after the first month of accumulation.
 
@@ -367,48 +361,39 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
 
 ### Level 4 → Level 5: Build Systems, Not Skills
 
-**What this unlocks:** Multi-phase workflows that produce consistently excellent output. Skills that call other skills. Sub-agents that handle specialized tasks. You become the architect, not the operator.
+**What this unlocks:** Instead of running one skill at a time, your skills work together like an assembly line. You become the person who designs the system, not the person who runs each step.
+
+**What "systems" means here:** At Level 3-4, you have individual skills: `/research`, `/create`, `/review`. At Level 5, these connect. Research automatically feeds into creation, which automatically gets reviewed. You also have "subagents," which are like assistants that Claude spins up to handle parts of the work in parallel. One researches while another writes. And you have "hooks," which are automatic safety checks that run every time Claude does something: like a spell-checker that runs every time you save a document.
 
 **Your roadmap:**
 
-1. **Write multi-phase skills** (15 minutes)
-   - Upgrade your simple skills to have phases with approval gates:
+1. **Add phases to your skills** (15 minutes)
+   - Right now your skills probably do everything in one go. Break them into phases with checkpoints where Claude pauses and asks "does this look right?" before continuing. This prevents Claude from going off-track for 10 minutes before you notice.
    ```markdown
    ## Phase 1: Research
    [Steps...]
-   **Approval gate:** Wait for confirmation before proceeding.
+   **Approval gate:** Show me what you found. Wait for my OK before continuing.
 
    ## Phase 2: Create
    [Steps...]
-   **Approval gate:** Review draft before finalizing.
+   **Approval gate:** Show me the draft. Wait for my OK before finalizing.
 
    ## Phase 3: Review
    [Steps...]
    ```
 
-2. **Chain skills together** (10 minutes)
-   - Design skills that feed into each other.
-   - `/research [company]` outputs a brief → `/create [deliverable]` uses it → `/review` quality checks it.
-   - Reference each other in the skill files.
+2. **Connect your skills together** (10 minutes)
+   - Design skills so the output of one becomes the input of the next. Your `/research` skill saves a brief. Your `/create` skill reads that brief and uses it. Your `/review` skill checks the final output. It's a pipeline: each step feeds the next.
 
-3. **Use subagents** (10 minutes)
-   - In your skills, use the Agent tool to spin up specialized subagents:
-     * Explore agents for codebase search
-     * Plan agents for architecture design
-     * General-purpose agents for multi-step research
-   - Define agent roles in `.claude/agents/` (project) or `~/.claude/agents/` (global)
-   - Subagents run in parallel. One researches while another writes while another reviews.
+3. **Use subagents for parallel work** (10 minutes)
+   - A subagent is a separate Claude instance that runs alongside your main session. Think of it like delegating: "You go research the competitor while I work on the proposal." Claude can spin these up inside your skills. One subagent researches, another writes, another reviews: all at the same time.
+   - Define agent roles in `.claude/agents/` so each one has its own personality and expertise.
 
-4. **Set up hooks as quality gates** (10 minutes)
-   - Configure pre/post hooks in `.claude/settings.json` that fire before or after Claude acts.
-   - PreToolUse hooks: block writes to sensitive files (.env, credentials), enforce formatting.
-   - PostToolUse hooks: auto-lint, run checks after edits.
-   - Hooks are quality guardrails, not infrastructure. They belong at this level.
+4. **Set up automatic safety checks** (10 minutes)
+   - Hooks are rules that run automatically before or after Claude does something. For example: "Before writing any file, check it's not a password file." Or: "After editing code, run the linter." You configure these in `.claude/settings.json`. They're like guardrails that prevent mistakes without you having to watch every action.
 
 5. **Quality systems** (ongoing)
-   - Build review checklists into your skills.
-   - Reference your memory/patterns/ and memory/examples/ files for consistency.
-   - Output should be production-ready, not "good enough."
+   - Build review checklists into your skills. Point Claude to your memory/examples/ files so it knows what "good" looks like. Output should be ready to send to a client, not "good enough."
 
 **Community tip:** The jump from Level 4 to 5 is where Claude Code stops feeling like a tool and starts feeling like a team. The key is building the orchestration layer, not just having more skills.
 
@@ -416,37 +401,37 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
 
 ### Level 5 → Level 6: Programmatic Pipelines
 
-**What this unlocks:** Claude Code as a programmable component. Scripts call it, data pipes through it, outputs feed into other systems. No human in the loop for routine tasks.
+**What this unlocks:** Claude works without you being there. You write a script once, and it runs Claude automatically whenever you want: every morning, before every meeting, on demand from your phone.
+
+**What "headless mode" actually means:** Normally you open Claude Code, type something, and wait for a response. That's "interactive mode": you're sitting there having a conversation. "Headless mode" means you run Claude from a script instead. No conversation, no typing. You give it a task in advance, it does the work, and saves the result to a file. You come back later and the work is done. It's the difference between calling someone on the phone vs. sending them a task by email.
 
 **Your roadmap:**
 
-1. **Headless mode** (5 minutes)
-   - Run Claude without the interactive terminal:
+1. **Try headless mode once** (5 minutes)
+   - Instead of opening Claude Code and typing, run this one line in your terminal:
    ```bash
    claude -p "Analyze all files in /src and write a security audit to audit.md"
    ```
-   - Pipe data in: `cat data.csv | claude -p "Summarize trends"`
-   - JSON output for chaining: `claude -p "List issues" --output-format json`
-   - **Important:** Slash commands (like `/lookout`) are interactive-only. In headless mode, describe the task in plain text or pipe the skill's prompt file: `claude -p "$(cat .claude/commands/lookout.md)" --allowedTools "Read,Write,Glob,Grep"`
+   - That's it. Claude reads the task, does the work, and saves the output. No conversation needed. The `-p` flag means "just do this task and finish."
+   - **Important:** Your slash commands (like `/lookout`) only work in interactive mode. In headless mode, you either describe the task in plain English or feed it the skill file directly: `claude -p "$(cat .claude/commands/lookout.md)"`
 
-2. **Build your first automation script** (15 minutes)
-   - A shell script that calls Claude Code as part of a pipeline:
+2. **Write your first automation script** (15 minutes)
+   - A script is just a text file with a list of commands your computer runs in order. You write it once and can run it whenever you want with a single click or command. Here's what one looks like:
    ```bash
    #!/bin/bash
-   # Daily briefing generator
-   # Note: use -p with a prompt string, NOT with /slash-commands
+   # This script generates a morning briefing automatically.
+   # You run it by typing: bash morning-briefing.sh
+   # Or you can schedule it to run every morning at 7am (that's Level 9).
    claude -p "Read my latest emails and Slack messages, write a morning briefing to briefing.md" \
      --allowedTools "Read,Write,Glob,Grep,mcp__google__gmail_search_messages"
    ```
+   - Save this as a file (e.g. `morning-briefing.sh`), then run it with `bash morning-briefing.sh`. Claude does the work and saves the result. You don't need to be watching.
 
-3. **Chain outputs programmatically** (10 minutes)
-   - Use JSON output mode to pipe Claude's output into other tools.
-   - Example: Claude analyzes data → outputs JSON → script processes it → sends to API.
+3. **Chain outputs together** (10 minutes)
+   - You can make Claude output structured data (JSON) instead of plain text, then feed that into another tool or another Claude call. Think of it like an assembly line: step 1 gathers data, step 2 analyzes it, step 3 creates the report. Each step runs automatically.
 
-4. **Integrate with existing tools** (ongoing)
-   - CI/CD pipelines (code review on every PR)
-   - Build scripts (generate documentation from code)
-   - Data pipelines (transform, analyze, report)
+4. **Integrate with your existing tools** (ongoing)
+   - Once you're comfortable with scripts, you can plug Claude into anything: automatically review code when someone submits a change, generate reports from your database, process incoming data.
 
 **Community tip:** Level 6 is where most people who do real automation work land. It's the practical ceiling for most use cases. Beyond here, you're building infrastructure.
 
@@ -454,26 +439,24 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
 
 ### Level 6 → Level 7: Browser Power
 
-**What this unlocks:** Claude controls a browser. It scrapes websites, takes screenshots, generates PDFs, fills forms, and runs research pipelines that crawl the web and synthesize findings.
+**What this unlocks:** Claude can open a web browser, visit websites, read what's on the page, take screenshots, and generate PDFs. It can research companies by actually visiting their website instead of relying on what it already knows.
+
+**What "browser automation" actually means:** You know how you open Chrome, go to a website, scroll around, and copy information? Browser automation means Claude does that same thing, but programmatically. It opens a real browser (you just can't see it), navigates to pages, reads the content, and brings back what it found. It can also take a screenshot of an HTML file you created and turn it into an image or PDF.
 
 **Your roadmap:**
 
 1. **Install browser tools** (5 minutes)
-   - Option A: `npm install playwright` in your project + `npx playwright install chromium`
-   - Option B: Enable Chrome integration via Claude Code CLI flags (`--browser`)
-   - Either path unlocks browser-powered workflows.
+   - Run `npm install playwright` in your project, then `npx playwright install chromium`. This installs a browser that Claude can control. Think of it like giving Claude its own Chrome window.
+   - Alternatively, enable Chrome integration via Claude Code CLI flags (`--browser`).
 
 2. **Screenshot and PDF generation** (10 minutes)
-   - Build skills that create HTML → screenshot to PNG → compile to PDF.
-   - Use case: branded decks, carousels, reports, one-pagers.
+   - Build skills that create an HTML page (like a deck or report), then screenshot it into a clean image or PDF. This is how you make professional-looking deliverables without Canva or PowerPoint.
 
-3. **Web scraping workflows** (15 minutes)
-   - Build a `/research [company]` skill that scrapes their website, LinkedIn, news.
-   - Claude synthesizes everything into a structured brief.
+3. **Web research workflows** (15 minutes)
+   - Build a skill where Claude visits a company's website, reads their pages, checks their LinkedIn, and synthesizes everything into a brief. Instead of relying on its training data (which might be outdated), it's reading the live website.
 
 4. **Research pipelines** (ongoing)
-   - Combine browser automation + MCPs: scrape web data, store in Notion, alert via Slack.
-   - Build competitive intelligence systems that run on demand.
+   - Combine browser + your other tools: Claude scrapes a website, saves the findings to Notion, and alerts you via Slack. Competitive intelligence on demand.
 
 **Community tip:** This is the level where Claude Code starts replacing paid SaaS tools. Members have canceled Gamma (decks), Canva Pro (design), Superhuman (email) after building equivalent browser-powered workflows.
 
@@ -481,32 +464,28 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
 
 ### Level 7 → Level 8: Multi-Agent Operations
 
-**What this unlocks:** Multiple Claude Code instances working in parallel. Each one is a specialist. You're the tech lead coordinating a team of AI agents.
+**What this unlocks:** Multiple Claude Code sessions running at the same time, each doing different work. Like having a team of specialists working in parallel.
+
+**What "multi-agent" actually means:** Imagine you have three employees. One is researching a competitor, one is writing a proposal, and one is reviewing last week's deliverable. They're all working at the same time on different tasks. That's what multi-agent means: you open multiple Claude Code windows and give each one a different job. They work simultaneously, and you coordinate the results.
 
 **Your roadmap:**
 
-1. **tmux multi-session setup** (10 minutes)
+1. **Open multiple Claude sessions at once** (10 minutes)
+   - Use a tool called tmux (a terminal multiplier: it splits your terminal screen into multiple panels). Each panel runs its own Claude Code session. One researches, another writes, another reviews: all at the same time.
    ```bash
    tmux new-session -s orchestrator
    # Split panes: Ctrl+B then %
    # Each pane runs: cd /project && claude
    ```
-   - One instance researches, another writes, another reviews. Simultaneously.
 
-2. **Define agent roles** (15 minutes)
-   - Each agent gets its own context and instructions.
-   - Orchestrator: breaks work into tasks, coordinates.
-   - Specialists: frontend, backend, research, review, testing.
-   - Pass work between agents via shared files in the repo.
+2. **Give each session a role** (15 minutes)
+   - Each Claude session gets its own instructions. One is the "researcher" (only gathers information), one is the "writer" (only creates content), one is the "reviewer" (only checks quality). They pass work between each other through shared files in your project folder.
 
-3. **VPS deployment** (30 minutes)
-   - Move your setup to a cloud server for persistent, always-available agents.
-   - SSH + Termius from your phone = Claude Code anywhere.
+3. **Move to a cloud server** (30 minutes)
+   - Instead of running everything on your laptop, you rent a small cloud server (a VPS: a computer in the cloud that's always on). You set up Claude Code there and access it from your phone or any computer via an app like Termius. Your agents are always available, even when your laptop is closed.
 
 4. **Coordination patterns** (ongoing)
-   - Shared task files that agents read and update.
-   - Git branches per agent to avoid conflicts.
-   - Orchestrator reviews and merges.
+   - The tricky part isn't running multiple agents: it's making sure they don't step on each other's work. Use shared task files, separate git branches per agent, and a review step before merging anything.
 
 **Community tip:** R moved his entire business to this model. "We've all become endpoint facilitators for our agents. We're context generators, for now." This level requires discipline. Multiple agents without coordination create chaos, not productivity.
 
@@ -514,28 +493,25 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
 
 ### Level 8 → Level 9: Always On
 
-**What this unlocks:** Claude Code runs whether you're at your desk or not. Scheduled tasks, automated monitoring, event-driven triggers. It's infrastructure now.
+**What this unlocks:** Claude runs on a schedule whether you're at your desk or not. Like having an employee who works night shifts: they do the routine work while you sleep, and the results are waiting for you in the morning.
+
+**What "always on" actually means:** At every previous level, you start Claude, give it work, and close it when you're done. At Level 9, Claude runs on a timer. Your computer (or cloud server) automatically starts Claude at specific times: 7am every morning, every Monday at noon, every hour. It does the work, saves the results, and stops. You never opened it or typed anything. It's like setting an alarm clock, but instead of waking you up, it wakes up Claude.
 
 **Your roadmap:**
 
-1. **Scheduled automation** (15 minutes)
-   - Cron jobs or launchd services that run Claude on a schedule:
+1. **Schedule a task to run automatically** (15 minutes)
+   - Your computer has a built-in scheduler (called "cron" on Mac/Linux). You tell it: "At 7am every weekday, run this script." The script calls Claude in headless mode, Claude does the work, saves the output. You wake up and the briefing is already there.
    ```bash
-   # Daily morning briefing at 7am (cron)
+   # This line tells your computer: at 7am every day, run Claude and generate a briefing
    0 7 * * * cd /project && claude -p "Generate morning briefing" >> /logs/briefing.log
    ```
-   - On macOS, use launchd plist files for more reliable scheduling.
-   - Weekly reports, daily digests, periodic audits.
-   - **Remember:** headless mode uses `-p` with plain text prompts, not slash commands.
+   - On macOS, launchd (another scheduler) is more reliable than cron. Either works.
 
-2. **Persistent background agents** (15 minutes)
-   - Use pm2 or systemd to keep agents running continuously.
-   - Pattern: agent watches a file/queue, processes items as they appear.
-   - Log rotation, error handling, restart policies.
+2. **Keep agents running continuously** (15 minutes)
+   - Instead of running Claude once and stopping, you can keep it running all the time using tools like pm2 (a process manager: it keeps programs alive and restarts them if they crash). Claude watches for new tasks in a file or queue and processes them as they appear. Like a customer service rep who's always on shift.
 
 3. **Monitoring and alerting** (15 minutes)
-   - Claude monitors data sources and alerts you when something needs attention.
-   - Example: check competitor pricing daily, alert on changes.
+   - Claude checks your data sources on a schedule and pings you when something needs attention. Example: every morning, check competitor pricing and alert you if anything changed. Or: scan your Slack channels for unanswered questions.
 
 **Community tip:** Level 9 is where the line between "using a tool" and "running an AI system" disappears. Most people don't need this. If your work is project-based, Level 5-7 is the sweet spot. Level 9 is for people running continuous operations.
 
@@ -543,33 +519,29 @@ Show ONLY the next level transition. Do not dump all 10 levels. Focus is everyth
 
 ### Level 9 → Level 10: Swarm Architecture
 
-**What this unlocks:** Autonomous execution. Agents that manage other agents. Systems that take a goal and work toward it without human intervention. The edge of what's possible.
+**What this unlocks:** You give Claude a goal, and it figures out how to get there on its own. It breaks the goal into tasks, assigns them to other Claude instances, reviews the results, and keeps going until the goal is met. You check in periodically, but you're not driving.
+
+**What "swarm" actually means:** At Level 8, you manually set up multiple Claude sessions and tell each one what to do. At Level 10, one "boss" Claude does that for you. You say "build this feature" and the boss Claude breaks it into pieces, spins up worker Claudes to handle each piece, checks their work, and assembles the final result. It's managing a team of AI agents the way a project manager manages a team of people, except the project manager is also AI.
 
 **Your roadmap:**
 
-1. **The Ralph Wiggum Loop** (advanced)
-   - Give Claude a PRD (product requirements document) and a test suite.
-   - It picks a task, implements, runs tests, commits if passing, picks next. Repeat.
-   - Safety checklist:
-     - Always run in a sandboxed environment
+1. **The autonomous loop** (advanced)
+   - Give Claude a document describing what you want built, plus a set of tests that define "done." Claude picks a task, does the work, runs the tests. If they pass, it commits and moves to the next task. If they fail, it fixes the issue and tries again. It keeps going until everything passes.
+   - Safety checklist (this is important because you're letting Claude work unsupervised):
+     - Always run in a sandboxed environment (an isolated copy, not your main project)
      - Set clear boundaries on what it can modify
-     - Review commits before pushing to main
-     - Set maximum iteration count
-     - Kill switch always accessible
+     - Review its work before it goes live
+     - Set a maximum number of attempts so it doesn't loop forever
+     - Keep a kill switch accessible so you can stop it anytime
 
-2. **Multi-agent orchestration frameworks**
-   - Agent Teams, Gastown, OpenClaw being tested by the community.
-   - Pattern: orchestrator agent breaks work into tasks, specialist agents execute, review agent validates.
-   - Each agent has its own CLAUDE.md, its own memory, its own skills.
+2. **Agent orchestration frameworks**
+   - The community is testing tools that make this easier: frameworks where you define agent roles and the system handles coordination. Each agent has its own instructions, its own memory, its own skills. The orchestrator assigns work and reviews results.
 
 3. **Agent-to-agent communication**
-   - Shared file system for task queues and results.
-   - Git-based coordination (branches, PRs, merges).
-   - Status files that agents read and update.
+   - Agents talk to each other through shared files. One agent writes a task list, another picks up items, does the work, and marks them done. They coordinate through your project folder and git branches, like coworkers using a shared task board.
 
 4. **Always-on assistants**
-   - OpenClaw: open source framework running Claude as a persistent assistant via WhatsApp/Telegram.
-   - Message it like a colleague. Always available.
+   - OpenClaw: an open source framework that runs Claude as a persistent assistant you can message via WhatsApp or Telegram. You text it like a colleague. It's always available, always has your context.
 
 **Community tip:** Level 10 is experimental. The community is actively building and testing these patterns. Things break. The value is in the learning. Very few people are here, and those who are spend significant time managing the systems. This is not "set and forget." This is "build, monitor, iterate."
 
