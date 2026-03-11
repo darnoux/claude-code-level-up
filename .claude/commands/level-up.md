@@ -795,13 +795,14 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
 
   /* Section Headers */
   .section-label {
-    font-size: 11px;
-    letter-spacing: 3px;
+    font-size: 15px;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    color: #555;
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #1a1a1a;
+    color: #fff;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #333;
+    font-weight: 700;
   }
 
   /* Capability Cards */
@@ -811,13 +812,13 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
 
   .cap-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
   }
 
   .cap-card {
     border: 1px solid #222;
-    padding: 16px;
+    padding: 20px;
     background: #111;
   }
 
@@ -828,27 +829,28 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
   }
 
   .cap-icon {
-    font-size: 16px;
-    margin-bottom: 8px;
+    font-size: 18px;
+    margin-bottom: 10px;
     color: #4ade80;
   }
 
   .cap-card.missing .cap-icon { color: #555; }
 
   .cap-title {
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #fff;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    font-weight: 700;
   }
 
   .cap-card.missing .cap-title { color: #555; }
 
   .cap-detail {
-    font-size: 12px;
-    color: #666;
-    line-height: 1.5;
+    font-size: 13px;
+    color: #999;
+    line-height: 1.6;
   }
 
   /* Next Level Section */
@@ -857,18 +859,19 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
   }
 
   .next-header {
-    font-size: 18px;
+    font-size: 22px;
     color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    font-weight: 700;
   }
 
   .next-header span { color: #f59e0b; }
 
   .gap-text {
-    color: #999;
-    font-size: 14px;
-    line-height: 1.7;
-    margin-bottom: 24px;
+    color: #bbb;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 32px;
     max-width: 720px;
   }
 
@@ -876,42 +879,44 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
   .steps {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
   }
 
   .step {
     display: flex;
-    gap: 16px;
+    gap: 20px;
     border: 1px solid #222;
-    padding: 20px;
+    padding: 24px;
     background: #111;
   }
 
   .step-num {
-    font-size: 24px;
+    font-size: 28px;
     color: #f59e0b;
     flex-shrink: 0;
-    width: 32px;
+    width: 36px;
+    font-weight: 700;
   }
 
   .step-body { flex: 1; }
 
   .step-title {
-    font-size: 14px;
+    font-size: 16px;
     color: #fff;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
+    font-weight: 700;
   }
 
   .step-desc {
-    font-size: 13px;
-    color: #888;
-    line-height: 1.6;
-    margin-bottom: 8px;
+    font-size: 14px;
+    color: #bbb;
+    line-height: 1.7;
+    margin-bottom: 10px;
   }
 
   .step-time {
-    font-size: 11px;
-    color: #555;
+    font-size: 12px;
+    color: #666;
     letter-spacing: 1px;
     text-transform: uppercase;
   }
