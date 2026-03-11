@@ -713,11 +713,11 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
   }
 
   .top-bar h1 {
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 3px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    color: #666;
+    color: #fff;
   }
 
   .top-bar .brand {
@@ -749,17 +749,19 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
   }
 
   .level-label {
-    font-size: 11px;
-    letter-spacing: 2px;
+    font-size: 14px;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    color: #666;
+    color: #fff;
     margin-bottom: 4px;
+    font-weight: 700;
   }
 
   .level-name {
-    font-size: 16px;
+    font-size: 20px;
     color: #f59e0b;
     letter-spacing: 1px;
+    font-weight: 700;
   }
 
   .summary-box {
