@@ -611,10 +611,13 @@ Generate one step per roadmap item from Phase 2:
 </div>
 ```
 
-If the roadmap step includes a code example, add it inside step-body:
+If the roadmap step includes a code example, add it inside step-body wrapped in a code-wrapper with a copy button:
 
 ```html
+<div class="code-wrapper">
 <pre class="step-code">claude -p "/lookout" --output-format json > ~/briefing.md</pre>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
 ```
 
 ### Dot Format (for {{PROGRESS_DOTS}})
@@ -692,6 +695,10 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
     color: #fff;
   }
 
+  .top-bar h1 .cc {
+    color: #d4845a;
+  }
+
   .top-bar .brand {
     font-size: 12px;
     color: #555;
@@ -709,11 +716,11 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
   .level-display {
     flex-shrink: 0;
     text-align: center;
-    min-width: 160px;
+    min-width: 200px;
   }
 
   .level-number {
-    font-size: 96px;
+    font-size: 140px;
     font-weight: 400;
     color: #f59e0b;
     line-height: 1;
@@ -750,8 +757,8 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
     display: flex;
     justify-content: center;
     gap: 4px;
-    margin-bottom: 56px;
-    padding: 20px 0;
+    margin-bottom: 32px;
+    padding: 16px 0;
     border-top: 1px solid #1a1a1a;
     border-bottom: 1px solid #1a1a1a;
   }
@@ -795,31 +802,55 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
 
   /* Section Headers */
   .section-label {
-    font-size: 15px;
+    font-size: 20px;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: #fff;
-    margin-bottom: 24px;
-    padding-bottom: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #333;
     font-weight: 700;
   }
 
   /* Capability Cards */
   .capabilities {
-    margin-bottom: 56px;
+    margin-bottom: 40px;
   }
 
   .cap-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
   }
 
   .cap-card {
     border: 1px solid #222;
-    padding: 20px;
+    padding: 10px 12px;
     background: #111;
+    transition: all 0.25s ease;
+    cursor: default;
+  }
+
+  .cap-card:hover {
+    padding: 18px 16px;
+    z-index: 10;
+    position: relative;
+    border-color: #444;
+    background: #1a1a1a;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  }
+
+  .cap-card:hover .cap-title {
+    font-size: 14px;
+  }
+
+  .cap-card:hover .cap-detail {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .cap-card:hover .cap-icon {
+    font-size: 18px;
   }
 
   .cap-card.missing {
@@ -829,28 +860,32 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
   }
 
   .cap-icon {
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-size: 14px;
+    margin-bottom: 4px;
     color: #4ade80;
+    display: inline-block;
+    margin-right: 6px;
   }
 
   .cap-card.missing .cap-icon { color: #555; }
 
   .cap-title {
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     font-weight: 700;
+    display: inline;
   }
 
   .cap-card.missing .cap-title { color: #555; }
 
   .cap-detail {
-    font-size: 13px;
+    font-size: 11px;
     color: #999;
-    line-height: 1.6;
+    line-height: 1.4;
+    margin-top: 4px;
   }
 
   /* Next Level Section */
@@ -869,9 +904,9 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
 
   .gap-text {
     color: #bbb;
-    font-size: 15px;
-    line-height: 1.8;
-    margin-bottom: 32px;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 24px;
     max-width: 720px;
   }
 
@@ -924,14 +959,38 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
   .step-code {
     background: #0a0a0a;
     border: 1px solid #222;
-    padding: 12px 16px;
-    font-size: 12px;
+    padding: 12px 48px 12px 16px;
+    font-size: 11px;
     color: #f59e0b;
-    margin: 8px 0;
+    margin: 0;
     overflow-x: auto;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-all;
     font-family: Consolas, 'Courier New', monospace;
   }
+
+  .code-wrapper {
+    position: relative;
+    margin: 8px 0;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #222;
+    border: 1px solid #333;
+    color: #888;
+    font-size: 11px;
+    font-family: Consolas, 'Courier New', monospace;
+    padding: 4px 10px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+  }
+  .copy-btn:hover { background: #333; color: #f59e0b; border-color: #f59e0b; }
+  .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
 
   /* Reference Table */
   .reference {
@@ -1000,7 +1059,7 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
 <div class="container">
 
   <div class="top-bar">
-    <h1>The 10 Levels of Claude Code</h1>
+    <h1>The 10 Levels of <span class="cc">Claude Code</span></h1>
     <div class="brand">thegenaicircle.com</div>
   </div>
 
@@ -1055,6 +1114,20 @@ Write this exact template, replacing all `{{TOKENS}}` with generated content:
   </div>
 
 </div>
+
+<script>
+function copyCode(btn) {
+  const code = btn.previousElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
 </body>
 </html>
 ```
