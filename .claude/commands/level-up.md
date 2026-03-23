@@ -6,7 +6,9 @@ description: Assess your Claude Code level (0-10) and get a personalized roadmap
 
 The 10 Levels of Claude Code. Scan your environment, determine where you actually are, get a focused roadmap to the next level, and optionally build the first step right now.
 
-This is NOT the generic "10 Levels of Claude" (browser, desktop, projects). This is specifically about Claude Code mastery. Level 0 is "just installed it." Level 10 is genuinely rare.
+These levels measure **environment maturity**, not personal skill. A senior engineer with a bare install is Level 0. A junior dev with a well-built system of skills, memory and automation could be Level 7. The question isn't "how good are you at coding?" It's "how much have you built around Claude Code to make it work for you?"
+
+This is NOT the generic "10 Levels of Claude" (browser, desktop, projects). This is specifically about your Claude Code setup. Level 0 is "just installed it." Level 10 is genuinely rare.
 
 **Usage:**
 - `/level-up` - Full flow: assess, roadmap, build
